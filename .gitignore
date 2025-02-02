@@ -1,0 +1,41 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Go workspace file
+go.work
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Environment files
+*.env
+.env.local
+.env*
+
+# Log files
+*.log
+
+# Binary output directory
+bin/
+dist/
+
+# Debug files
+debug/
+
+# Database files
+*.db
+*.sqlite
+
+# Build output
+build/
