@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,9 @@ func main() {
 
 	s.GET("/events", getEvents)
 
-	s.Run(":8080")
+	if err := s.Run(":8080"); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
 
 func getEvents(context *gin.Context) {
