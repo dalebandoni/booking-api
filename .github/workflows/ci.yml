@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-test-build:
+    name: Lint, Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+
+      - name: Install Dependencies
+        run: go mod tidy
+
+      - name: Run Code Linter
+        run: go vet ./...
+
+      - name: Run Unit Tests
+        run: go test -v ./...
+
+      - name: Run Security Scan
+        uses: securego/gosec@master
+        with:
+          args: ./...
+
+      - name: Build Golang App
+        run: go build -v -o booking-api
