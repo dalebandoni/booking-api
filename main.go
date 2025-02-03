@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/dalebandoni/booking-api/db"
 	"github.com/dalebandoni/booking-api/models"
@@ -14,6 +15,7 @@ func main() {
 	s := gin.Default()
 
 	s.GET("/events", getEvents)
+	s.GET("/events/:id", getEvent)
 	s.POST("/events", createEvent)
 
 	if err := s.Run(":8080"); err != nil {
@@ -27,6 +29,24 @@ func getEvents(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch events, try again later."})
 		return
 	}
+	context.JSON(http.StatusOK, e)
+}
+
+func getEvent(context *gin.Context) {
+	eid, err := strconv.ParseInt(context.Param("id"), 10, 64)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse event id."})
+		return
+	}
+
+	e, err := models.GetEventByID(eid)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event."})
+		return
+	}
+
 	context.JSON(http.StatusOK, e)
 }
 
